@@ -1,3 +1,5 @@
+#!/bin/bash
+
 overall=0
 
 for n in 1 2 3 4; do
@@ -23,7 +25,7 @@ for n in 1 2 3 4; do
                 if [ ! -f "$outfile" ]; then
                     echo "missing $outfile" >&2
                     ok=0
-                elif ! (cd "$src" && diff -u "$a" "$b") | cmp -s - "$outfile"; then
+                elif ! cmp -s <(cd "$src" && diff -u "$a" "$b" | tail -n +3) <(tail -n +3 "$outfile"); then
                     echo "wrong contents in $outfile" >&2
                     ok=0
                 fi
